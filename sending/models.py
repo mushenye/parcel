@@ -1,6 +1,8 @@
 import uuid
 from django.db import models
 from . choices import OFFICES
+
+
 # Create your models here.
 class Person (models.Model):
     name= models.CharField(max_length=100)
@@ -12,7 +14,7 @@ class Parcel (models.Model):
     parcel_id = models.UUIDField( primary_key = True, default = uuid.uuid4, editable = False)
     created=models.DateTimeField(auto_now_add=True)
     sender= models.ForeignKey(Person, on_delete=models.CASCADE)
-    reciever= models.ForeignKey(Person, on_delete=models.CASCADE)
+    reciever= models.OneToOneField(Person, on_delete=models.CASCADE, related_name= "reciever")
     origin = models.CharField(choices=OFFICES, max_length=100 )
     destination = models.CharField(choices=OFFICES, max_length=100 )
     description=models.TextField(max_length=200)
@@ -30,7 +32,8 @@ class Shipping (models.Model):
     vehicle_number=models.CharField(max_length=100)
     is_delivered =models.BooleanField(default=False) 
 
-class Storage(models.Model):
+class Storage(models.Model):    
+    store = models.CharField(choices=OFFICES, max_length=100 )
     storage_number=models.IntegerField(default=1)
     date=models.DateTimeField(auto_now_add=True)
     parcel=models.ForeignKey(Parcel, on_delete=models.CASCADE)

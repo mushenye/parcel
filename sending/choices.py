@@ -1,4 +1,4 @@
 OFFICES=[
-    ('Nairobi', 'Nairobi')
-    ('Nakuru', 'Nakuru')
+    ('Nairobi', 'Nairobi'),
+    ('Nakuru', 'Nakuru'),
 ]
