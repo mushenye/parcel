@@ -12,6 +12,7 @@ class Parcel (models.Model):
     parcel_id = models.UUIDField( primary_key = True, default = uuid.uuid4, editable = False)
     created=models.DateTimeField(auto_now_add=True)
     sender= models.ForeignKey(Person, on_delete=models.CASCADE)
+    reciever= models.ForeignKey(Person, on_delete=models.CASCADE)
     origin = models.CharField(choices=OFFICES, max_length=100 )
     destination = models.CharField(choices=OFFICES, max_length=100 )
     description=models.TextField(max_length=200)
@@ -22,4 +23,23 @@ class Parcel (models.Model):
 class Price (models.Model):
     parcel=models.ForeignKey(Parcel, on_delete=models.CASCADE)
     weight=models.IntegerField()
-    price=models.DecimalField(max_digits=10, decimal_places=2)
+    price=models.DecimalField(max_digits=10, decimal_places=2, default=250)
+
+class Shipping (models.Model):
+    parcel=models.ForeignKey(Parcel, on_delete=models.CASCADE)
+    vehicle_number=models.CharField(max_length=100)
+    is_delivered =models.BooleanField(default=False) 
+
+class Storage(models.Model):
+    storage_number=models.IntegerField(default=1)
+    date=models.DateTimeField(auto_now_add=True)
+    parcel=models.ForeignKey(Parcel, on_delete=models.CASCADE)
+
+class Collect (models.Model):
+    date_collected=models.DateTimeField(auto_now_add=True)
+    parcel=models.ForeignKey(Parcel, on_delete=models.CASCADE)
+    storage=models.ForeignKey(Storage, on_delete=models.CASCADE)
+    person=models.ForeignKey(Person, on_delete=models.CASCADE)
+
+
+
