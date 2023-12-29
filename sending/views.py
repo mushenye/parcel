@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render
 
-from sending.forms import PersonForm
+from sending.forms import ParcelForm, PersonForm
 
 # Create your views here.
 
@@ -20,5 +20,22 @@ def person_details (request):
     return render(request, 'sending/detailform.html',
                   context={
                       'form':form
-                  }
-                  )
+                  })
+
+
+def parcel_details (request):
+    if request.method == 'POST':
+        form= ParcelForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect ('/')
+    else:
+        form= ParcelForm()
+        return render(
+            request,
+            'sending/parcelform.html',
+            context={
+                'form':form
+            }
+        )
+    
